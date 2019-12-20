@@ -26,6 +26,32 @@ namespace CourseLibrary.API.Services
             _propertyMappings.Add(new PropertyMapping<AuthorDto, Author>(_authorPropertyMapping));
         }
 
+        public bool ValidMappingExistFor<TSource, TDestionation>(string fileds)
+        {
+            var mapping = GetPropertyMapping<TSource, TDestionation>();
+
+            if (string.IsNullOrEmpty(fileds))
+            {
+                return true;
+            };
+
+            var fieldsAfterSplit = fileds.Split(',');
+            
+            foreach (var field in fieldsAfterSplit)
+            {                
+                var trimmedField = field.Trim();
+                
+                var indexOfFirstSpace = trimmedField.IndexOf(" ");
+                var propertyName = indexOfFirstSpace == -1 ?
+                    trimmedField : trimmedField.Remove(indexOfFirstSpace);
+
+                if (!mapping.ContainsKey(propertyName))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
         public Dictionary<string, PropertyMappingValue> GetPropertyMapping<TSource, TDestination>()
         {
             var matchingType = _propertyMappings.OfType<PropertyMapping<TSource, TDestination>>();

@@ -151,11 +151,11 @@ namespace CourseLibrary.API.Services
                     || a.LastName.Contains(searchQuery));
             }
 
-            if (!string.IsNullOrEmpty(authorsResourceParameters.SortBy))
+            if (!string.IsNullOrEmpty(authorsResourceParameters.OrderBy))
             {   
                 var authorProperyMappingDict = _propertyMappingService.GetPropertyMapping<AuthorDto, Author>();
 
-                collection = collection.ApplySort(authorsResourceParameters.SortBy, authorProperyMappingDict);
+                collection = collection.ApplySort(authorsResourceParameters.OrderBy, authorProperyMappingDict);
             }
 
             return PagedList<Author>.Create(collection, authorsResourceParameters.PageNumber, authorsResourceParameters.PageSize);
